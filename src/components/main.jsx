@@ -7,7 +7,7 @@ function Main() {
 
     const [arr, updateArr] = React.useState( allNewDice())
     const [tenzies,youWon] = useState(false)
-    const [rolls, upDateRolls] = useState(false)
+    const [rolls, upDateRolls] = useState(0)
 
     useEffect(()=> {
         // console.log('changed')
@@ -59,9 +59,11 @@ function Main() {
                     return die.isHeld ? die : generateNewValue()
                 }))
             )
+            upDateRolls(prev => prev + 1)
         } else {
             updateArr(allNewDice())
             youWon(false)
+            upDateRolls(0)
         }
         // updateArr(allNewDice())
     }
@@ -90,6 +92,7 @@ function Main() {
                             {diceElements}
                         </div>
                         <button className='roll' onClick={rollDice }>{tenzies ? 'New Game' : 'Roll'}</button>
+                        {tenzies ? <p>Won after {rolls} rolls</p> : <p>Rolls : {rolls}</p>}
                     </div>
                 </div>
             </div>
