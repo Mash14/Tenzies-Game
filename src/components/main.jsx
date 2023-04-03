@@ -10,6 +10,13 @@ function Main() {
     const [rolls, upDateRolls] = useState(0)
 
     useEffect(()=> {
+        if(tenzies && rolls < localStorage.rolls) {
+            localStorage.setItem('rolls',rolls)
+        }
+        
+    },[tenzies])
+
+    useEffect(()=> {
         // console.log('changed')
         // every() it is used to check that all values of an array are the same and returns false if not otherwise true
         // to check if won we see if all the dice have been held and they have the same value -> die.isHeld === true
@@ -44,11 +51,13 @@ function Main() {
     }
 
     function hold(id) {
-        updateArr(prev => (
-            prev.map(die => {
-                return (id === die.id) ? {...die, isHeld : !die.isHeld} : die 
-            })
-        ))
+        if (!tenzies) {
+            updateArr(prev => (
+                prev.map(die => {
+                    return (id === die.id) ? {...die, isHeld : !die.isHeld} : die 
+                })
+            ))
+        } 
     }
 
     function rollDice() {
@@ -71,16 +80,18 @@ function Main() {
     const diceElements = arr.map(die => <Die 
         key={die.id} 
         die={die} 
-        className='one'
+        // className='scene'
         hold={hold}
+        rollDie={rollDice}
         />)
 
     return ( 
         <React.Fragment>
             
             <div className="border">
-                {tenzies && <Confetti width={350} height={380}/>}
+                {tenzies && <Confetti width={960} height={600}/>}
                 <div className="inner-border">
+                    {/* <p>{time.timer_text}</p> */}
                     <div className="game">
                         <div className='title'>
                             <h2>Tenzies Game</h2>
@@ -92,7 +103,10 @@ function Main() {
                             {diceElements}
                         </div>
                         <button className='roll' onClick={rollDice }>{tenzies ? 'New Game' : 'Roll'}</button>
-                        {tenzies ? <p>Won after {rolls} rolls</p> : <p>Rolls : {rolls}</p>}
+                        <div className='flex'>
+                            {tenzies ? <div className='pad'>Winning rolls : {rolls}</div> : <div className='pad'>Rolls : {rolls}</div>}
+                            <div>Fewest winning rolls : {localStorage.rolls}</div>
+                        </div>
                     </div>
                 </div>
             </div>

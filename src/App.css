@@ -8,16 +8,16 @@ body {
 }
 .border {
   position: relative;
-  width: 360px;
-  height: 379px;
+  width: 960px;
+  height: 609px;
   left: 20px;
-  top: 20px;
+  /* top: 20px; */
   background-color: #0B2434;
 }
 .inner-border {
   position: absolute;
-  width: 320px;
-  height: 320px;
+  width: 920px;
+  height: 550px;
   left: 20px;
   top: 30px;
   background-color: #F5F5F5;
@@ -26,10 +26,10 @@ body {
 }
 .game {
   position: absolute;
-  width: 250.88px;
-  height: 252.8px;
+  width: 850.88px;
+  height: 482.8px;
   left: 34.56px;
-  top: 33.28px;
+  /* top: 33.28px; */
 }
 .title {
   /* position: absolute;
@@ -38,7 +38,7 @@ body {
   left: 61.44px;
   top: 33.28px; */
   text-align: center;
-  margin-top: 15px;
+  /* margin-top: 15px; */
 }
 h2 {
   font-weight: 700;
@@ -48,29 +48,29 @@ h2 {
   color: #2B283A;
 }
 /* .text {
-  position:absolute;
-  width: 232.96px;
-  height: 31.36px;
-  left: 43.52px;
-  top: 72.32px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  text-align: center;
 } */
 .text p {
   font-style: normal;
   font-weight: 500;
-  font-size: 13.1072px;
+  font-size: 20px;
   line-height: 16px;
   display: flex;
   align-items: center;
   text-align: center;
   letter-spacing: -0.03em;
   color: #4A4E74;
+  padding-left: 45px ;
 }
 .items {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 18px;
 }
 .one {
   /* position: absolute; */
@@ -90,18 +90,118 @@ h2 {
 
 .roll {
   border: none;
-  width: 92.16px;
-  height: 35.84px;
+  /* width: 92.16px;
+  height: 35.84px; */
   left: 113.92px;
   top: 250.24px;
   background-color: rgb(3, 3, 175);
   display: block;
   margin: auto;
-  margin-top: 15px;
+  margin-top: 35px;
   border-radius: 5px;
   font-size: 16.384px;
   color: #FFFFFF;
   font-weight: 700;
   line-height: 19px;
   cursor: pointer;
+  padding: 15px 35px;
+}
+.flex {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-content: center;
+  position: fixed;
+  font-weight: bold;
+  bottom: 50px;
+}
+.flex .pad {
+  margin-bottom: 7px;
+}
+
+/* For the cube  */
+.scene {
+  width: 150px;
+  height: 150px;
+  /* margin: 50px; */
+  perspective: 600px;
+}
+
+.cube {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: translateZ(-150px);
+  transition: transform 3s;
+  /* transition-delay: 1s; */
+  /* transform: rotateX(-45deg) rotateY(-30deg); */
+}
+
+.cube_face {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border: 2px solid black;
+  line-height: 150px;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  background-color: black;
+  opacity: 0.75;
+  border-radius: 5px;
+}
+
+/* Each side  */
+.face_1 {
+  transform: rotateY(0deg) translateZ(72px);
+}
+.face_2 {
+  transform: rotateY(180deg) translateZ(72px);
+}
+.face_3 {
+  transform: rotateY(90deg) translateZ(72px);
+}
+.face_4 {
+  transform: rotateY(-90deg) translateZ(72px);
+}
+.face_5 {
+  transform: rotateX(90deg) translateZ(72px);
+}
+.face_6 {
+  transform: rotateX(-90deg) translateZ(72px);
+}
+
+/* Cube rotating animation  */
+.show_1 {
+  transform: translateZ(-100px) rotateY(0deg);
+  transition: all 1s;
+}
+.show_2 {
+  transform: translateZ(-100px) rotateY(-180deg);
+  transition: all 1s;
+}
+.show_3 {
+  transform: translateZ(-100px) rotateY(-90deg);
+  transition: all 1s;
+}
+.show_4 {
+  transform: translateZ(-100px) rotateY(90deg);
+  transition: all 1s;
+}
+.show_5 {
+  transform: translateZ(-100px) rotateX(-90deg);
+  transition: all 1s;
+}
+.show_6 {
+  transform: translateZ(-100px) rotateX(90deg);
+  transition: all 1s;
+}
+.backy {
+  background-color: black;
+  opacity: 1;
+  transform: scale(1.01);
+  /* border: 2px solid yellow; */
 }
