@@ -2,12 +2,16 @@ import React, {useState,useEffect} from 'react';
 import Die from './die';
 import { nanoid } from 'nanoid';
 import Confetti from 'react-confetti';
+import EasyTimer from 'easytimer.js'
 
 function Main() {
 
     const [arr, updateArr] = React.useState( allNewDice())
     const [tenzies,youWon] = useState(false)
     const [rolls, upDateRolls] = useState(0)
+    const [time,updateTime] = useState({
+        timer_text:'00:00:00', timer_state:'stopped',timer:new EasyTimer()
+    })
 
     useEffect(()=> {
         if(tenzies && rolls < localStorage.rolls) {
@@ -15,6 +19,24 @@ function Main() {
         }
         
     },[tenzies])
+
+    useEffect(()=>{
+        let timer = time.timer
+        time.timer.start()
+        timer.addEventListener('secondsUpdated',onTimerUpdated)
+        // console.log(time.timer_text)
+        if(tenzies) {
+            console.log(time.timer_text)
+            time.timer.stop()
+        }
+    })
+
+    function onTimerUpdated(e) {
+        updateTime(prev => ({
+            ...prev,
+            timer_text : time.timer.getTimeValues().toString()
+        }))
+    }
 
     useEffect(()=> {
         // console.log('changed')
@@ -74,13 +96,12 @@ function Main() {
             youWon(false)
             upDateRolls(0)
         }
-        // updateArr(allNewDice())
     }
 
+    
     const diceElements = arr.map(die => <Die 
         key={die.id} 
         die={die} 
-        // className='scene'
         hold={hold}
         rollDie={rollDice}
         />)
@@ -102,11 +123,17 @@ function Main() {
                         <div className="items">
                             {diceElements}
                         </div>
+                        {/* <p>{time.timer_text}</p> */}
                         <button className='roll' onClick={rollDice }>{tenzies ? 'New Game' : 'Roll'}</button>
+                        
                         <div className='flex'>
                             {tenzies ? <div className='pad'>Winning rolls : {rolls}</div> : <div className='pad'>Rolls : {rolls}</div>}
                             <div>Fewest winning rolls : {localStorage.rolls}</div>
                         </div>
+                        <div className="time">
+                            <div className="time-text">Time : {time.timer_text}</div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
