@@ -10,16 +10,25 @@ function Main() {
     const [tenzies,youWon] = useState(false)
     const [rolls, upDateRolls] = useState(0)
     const [time,updateTime] = useState({
-        timer_text:'00:00:00', timer_state:'stopped',timer:new EasyTimer()
+        timer_text:'00:00:00',timer:new EasyTimer()
     })
 
+    // Store rolls to localStorage
     useEffect(()=> {
-        if(tenzies && rolls < localStorage.rolls) {
-            localStorage.setItem('rolls',rolls)
+        if(tenzies) {
+            // First set up localStorage
+            if(!localStorage.rolls) {
+                localStorage.setItem('rolls',rolls)
+            }
+            // Update localStorage
+            if (rolls < localStorage.rolls){
+                localStorage.setItem('rolls',rolls)
+            }
         }
         
     },[tenzies])
 
+    // Time taken to win
     useEffect(()=>{
         let timer = time.timer
         time.timer.start()
@@ -38,8 +47,8 @@ function Main() {
         }))
     }
 
+    // Check wining game
     useEffect(()=> {
-        // console.log('changed')
         // every() it is used to check that all values of an array are the same and returns false if not otherwise true
         // to check if won we see if all the dice have been held and they have the same value -> die.isHeld === true
         const allAreHeld = arr.every(die => die.isHeld)
@@ -49,6 +58,7 @@ function Main() {
         }
     },[arr])
 
+    // New Dice
     function allNewDice() {
         let array = []
         for (let i = 0; i < 10; i++ ) {
@@ -59,7 +69,6 @@ function Main() {
                 id: nanoid()
             })
         }
-        // console.log(array)
         return array
         
     }  
@@ -72,6 +81,7 @@ function Main() {
         }
     }
 
+    // Hold specific die
     function hold(id) {
         if (!tenzies) {
             updateArr(prev => (
@@ -98,7 +108,7 @@ function Main() {
         }
     }
 
-    
+    // Each die   
     const diceElements = arr.map(die => <Die 
         key={die.id} 
         die={die} 
