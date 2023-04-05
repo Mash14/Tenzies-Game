@@ -35,7 +35,6 @@ function Main() {
         timer.addEventListener('secondsUpdated',onTimerUpdated)
         // console.log(time.timer_text)
         if(tenzies) {
-            console.log(time.timer_text)
             time.timer.stop()
         }
     })
@@ -138,7 +137,7 @@ function Main() {
                         
                         <div className='flex'>
                             {tenzies ? <div className='pad'>Winning rolls : {rolls}</div> : <div className='pad'>Rolls : {rolls}</div>}
-                            <div>Fewest winning rolls : {localStorage.rolls}</div>
+                            {localStorage.rolls ? <div>Fewest winning rolls : {localStorage.rolls}</div> : <div></div>}
                         </div>
                         <div className="time">
                             <div className="time-text">Time : {time.timer_text}</div>
