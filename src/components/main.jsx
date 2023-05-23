@@ -2,7 +2,8 @@ import React, {useState,useEffect} from 'react';
 import Die from './die';
 import { nanoid } from 'nanoid';
 import Confetti from 'react-confetti';
-import EasyTimer from 'easytimer.js'
+import EasyTimer from 'easytimer.js';
+import Loader from './loader';
 
 function Main() {
 
@@ -12,6 +13,7 @@ function Main() {
     const [time,updateTime] = useState({
         timer_text:'00:00:00',timer:new EasyTimer()
     })
+    const [isLoading, setLoading] = useState(false)
 
     // Store rolls to localStorage
     useEffect(()=> {
@@ -101,9 +103,14 @@ function Main() {
             )
             upDateRolls(prev => prev + 1)
         } else {
-            updateArr(allNewDice())
-            youWon(false)
-            upDateRolls(0)
+            setLoading(true)
+            setTimeout(()=> {
+                updateArr(allNewDice())
+                youWon(false)
+                upDateRolls(0)
+                setLoading(false)
+            },3000)
+            
         }
     }
 
@@ -119,32 +126,38 @@ function Main() {
         <React.Fragment>
             
             <div className="border">
-                {tenzies && <Confetti width={960} height={600}/>}
-                <div className="inner-border">
-                    {/* <p>{time.timer_text}</p> */}
-                    <div className="game">
-                        <div className='title'>
-                            <h2>Tenzies Game</h2>
+                {isLoading ? 
+                    <Loader/>
+                    :
+                    <div className="all">
+                        {tenzies && <Confetti width={960} height={600}/>}
+                        <div className="inner-border">
+                            {/* <p>{time.timer_text}</p> */}
+                            <div className="game">
+                                <div className='title'>
+                                    <h2>Tenzies Game</h2>
+                                </div>
+                                <div className="text">
+                                    <p>Roll untill all dice are the same. Click Each die to freeze it at its current value between rolls</p>
+                                </div>
+                                <div className="items">
+                                    {diceElements}
+                                </div>
+                                
+                                <button className='roll' onClick={rollDice }>{tenzies ? 'New Game' : 'Roll'}</button>
+                                
+                                <div className='flex'>
+                                    {tenzies ? <div className='pad'>Winning rolls : {rolls}</div> : <div className='pad'>Rolls : {rolls}</div>}
+                                    {localStorage.rolls && localStorage.rolls ? <div>Fewest winning rolls : {localStorage.rolls}</div> : <div></div>}
+                                </div>
+                                <div className="time">
+                                    <div className="time-text">Time : {time.timer_text}</div>
+                                </div>
+                                
+                            </div>
                         </div>
-                        <div className="text">
-                            <p>Roll untill all dice are the same. Click Each die to freeze it at its current value between rolls</p>
-                        </div>
-                        <div className="items">
-                            {diceElements}
-                        </div>
-                        {/* <p>{time.timer_text}</p> */}
-                        <button className='roll' onClick={rollDice }>{tenzies ? 'New Game' : 'Roll'}</button>
-                        
-                        <div className='flex'>
-                            {tenzies ? <div className='pad'>Winning rolls : {rolls}</div> : <div className='pad'>Rolls : {rolls}</div>}
-                            {localStorage.rolls ? <div>Fewest winning rolls : {localStorage.rolls}</div> : <div></div>}
-                        </div>
-                        <div className="time">
-                            <div className="time-text">Time : {time.timer_text}</div>
-                        </div>
-                        
                     </div>
-                </div>
+                }
             </div>
         </React.Fragment>
     );
