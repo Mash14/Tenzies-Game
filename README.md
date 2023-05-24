@@ -30,12 +30,14 @@ Tenzies Game is a simple dice rolling game built with React and Vite. It challen
    cd Tenzies-Game
    ```
 3. Install the dependencies using npm:
-   `    npm install
-   `
-   4 Start the development server:
-   `    npm run dev
-   `
-   5 Open your browser and visit `http://localhost:5173/` to play the game.
+   ```
+   npm install
+   ```
+4. Start the development server:
+   ```
+   npm run dev
+   ```
+5. Open your browser and visit `http://localhost:5173/` to play the game.
 
 ## How to Play
 
