@@ -206,13 +206,21 @@ h2 {
 .time {
   position: absolute;
   right: 20px;
+  bottom: -65px;
+  display: flex;
+  flex-direction: column;
 }
 .time-text {
   font-weight: bold;
-
+  /* margin-bottom: 15px; */
+}
+.time .pad {
+  margin-bottom: 7px;
 }
 .loader {
   position: absolute;
+  top: 40%;
+  left: 43%;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #0B2434;

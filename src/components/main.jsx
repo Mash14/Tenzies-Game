@@ -13,6 +13,12 @@ function Main() {
     const [time,updateTime] = useState({
         timer_text:'00:00:00',timer:new EasyTimer()
     })
+    // the time taken for the game
+    const [elapsedTime, setElapsedTime] = useState(0)
+    // previous record 
+    const [previousRecord, setPreviousRecord] = useState(
+        parseFloat(localStorage.time) || null 
+    );
     const [isLoading, setLoading] = useState(false)
 
     // Store rolls to localStorage
@@ -35,11 +41,31 @@ function Main() {
         let timer = time.timer
         time.timer.start()
         timer.addEventListener('secondsUpdated',onTimerUpdated)
-        // console.log(time.timer_text)
         if(tenzies) {
-            time.timer.stop()
+            time.timer.stop() 
         }
     })
+    // update the elapsed time every second
+    useEffect(()=> {
+        if(time.timer && !tenzies) {
+            const interval = setInterval(()=> {
+                const wakati = time.timer.getTimeValues().seconds;
+                setElapsedTime(wakati); 
+            },1000)
+            
+            // Cleanup the interval when the component unmounts
+            return () => clearInterval(interval)
+        }
+    },[time.timer,tenzies])
+    // Set up to the localStorage 
+    useEffect(()=> {
+        if(tenzies) {
+            if(!previousRecord || elapsedTime < previousRecord) {
+                localStorage.time = elapsedTime.toString();
+                setPreviousRecord(elapsedTime);
+            }
+        }
+    },[elapsedTime,previousRecord,tenzies])
 
     function onTimerUpdated(e) {
         updateTime(prev => ({
@@ -47,6 +73,17 @@ function Main() {
             timer_text : time.timer.getTimeValues().toString()
         }))
     }
+
+    // Formart the elapsed time
+    const formartTime = (totalSeconds) => {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        return `${hours.toString().padStart(2,'0')}:
+                ${minutes.toString().padStart(2,'0')}:
+                ${seconds.toString().padStart(2,'0')}`
+    };
 
     // Check wining game
     useEffect(()=> {
@@ -109,7 +146,7 @@ function Main() {
                 youWon(false)
                 upDateRolls(0)
                 setLoading(false)
-            },3000)
+            },2000)
             
         }
     }
@@ -148,10 +185,11 @@ function Main() {
                                 
                                 <div className='flex'>
                                     {tenzies ? <div className='pad'>Winning rolls : {rolls}</div> : <div className='pad'>Rolls : {rolls}</div>}
-                                    {localStorage.rolls && localStorage.rolls ? <div>Fewest winning rolls : {localStorage.rolls}</div> : <div></div>}
+                                    {localStorage.rolls && localStorage.rolls ? <div>Record rolls : {localStorage.rolls}</div> : <div></div>}
                                 </div>
                                 <div className="time">
-                                    <div className="time-text">Time : {time.timer_text}</div>
+                                    <div className="time-text pad">Time : {time.timer_text}</div>
+                                    {localStorage.time && <div className="time-text pad">Record Time : {formartTime(previousRecord)}</div>}
                                 </div>
                                 
                             </div>
